@@ -1,0 +1,2 @@
+Name: LB-CodeDeployAppASG-1
+DNS Name: LB-CodeDeployAppASG-1-1440846671.us-east-1.elb.amazonaws.com

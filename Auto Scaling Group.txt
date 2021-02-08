@@ -1,0 +1,5 @@
+Name: CodeDeployAppASG
+
+Desired capacity: 2
+Minimum capacity: 1
+Maximum capacity: 2

@@ -1,0 +1,8 @@
+Jenkins
+Login
+Username: admin
+Password: abcd@1234
+
+Project 1:
+Language: Nodejs
+Git: https://github.com/amansubhan/static-website.git
