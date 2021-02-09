@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-ws-server",
+  "version": "1.0.0",
+  "description": "Nodejs WebSocket Server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Aman Subhan <amansubhan929@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "websocket": "~1.0.33"
+  }
+}
