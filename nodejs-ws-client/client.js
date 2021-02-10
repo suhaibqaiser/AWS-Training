@@ -2,7 +2,7 @@ window.onload = function () {
   document.getElementById('messageBox').value = "";
   document.getElementById('log').value = "";
 };
-const ws = new WebSocket('ws://localhost:3100/');
+const ws = new WebSocket('ws://ec2-107-21-10-51.compute-1.amazonaws.com:6380');
 setConnectionStatus();
 setInterval(function () { setConnectionStatus(); }, 1000);
 
@@ -41,7 +41,7 @@ function checkConnection() {
 
 function sendMessage() {
   ws.send(document.getElementById('messageBox').value);
-  document.getElementById('log').value += '\n' + Date() + " | Message sent to server successfully";
+  document.getElementById('log').value += '\n' + Date() + " | Message sent to server...";
   ws.onmessage = function (e) {
     document.getElementById('log').value += '\n' + e.data;
     document.getElementById('messageBox').value = "";

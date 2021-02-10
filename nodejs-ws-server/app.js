@@ -4,7 +4,7 @@ const WebSocketServer = require('websocket').server;
 const port = 3100;
 
 const server = http.createServer();
-server.listen(port);
+server.listen(port, '0.0.0.0');
 
 const wsServer = new WebSocketServer({
     httpServer: server
