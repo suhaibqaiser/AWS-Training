@@ -1,7 +1,7 @@
 const http = require('http');
 var os = require("os");
 const WebSocketServer = require('websocket').server;
-const port = 3100;
+const port = 6380;
 
 const server = http.createServer();
 server.listen(port, '0.0.0.0');
