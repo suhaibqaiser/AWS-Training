@@ -6,7 +6,7 @@ const port = 3000
 
 //Set up mongoose connection
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb+srv://mongoUser:h8Vk3EyiWzF3sWq@cluster0.tipo5.mongodb.net/clients?retryWrites=true&w=majority';
+var mongoDB = 'mongodb+srv://mongoUser:1t3jWnpoC0imAM4d@cluster0.tipo5.mongodb.net/clients?retryWrites=true&w=majority';
 
 mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
 var db = mongoose.connection;

@@ -45,10 +45,8 @@ exports.client_register = function (req, res, next) {
         });
     client.save(function (err) {
         if (err) { return next(err); }
-        // Successful - redirect to new client record.
         console.log(client.id);
-        console.log(client.duration);
-        res.redirect(client.url);
+        res.status(200).send({ title: 'Client Registered', client: client });
     });
 
 };

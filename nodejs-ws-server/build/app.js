@@ -5,10 +5,21 @@ const WebSocket = require('ws');
 
 const http = require('http');
 
-const url = require('url'); // application constants
+const url = require('url');
+
+const axios = require('axios');
+
+const {
+  v4: uuidv4
+} = require('uuid');
+
+const {
+  randomInt
+} = require("crypto"); // application constants
 
 
-const port = 6380; // application initialization
+const port = 6380;
+const apiServer = 'http://localhost:3000/client/'; // application initialization
 
 const server = http.createServer();
 const ws = new WebSocket.Server({
@@ -23,11 +34,51 @@ server.on('upgrade', function upgrade(request, socket, head) {
       ws.emit('connection', wsws, request);
       wsws.isAlive = true;
       console.log('Client connected ');
-      wsws.on('pong', heartbeat);
+      axios.put(apiServer + 'register', {
+        clientName: randomInt(99999),
+        clientIp: request.socket.remoteAddress,
+        clientHostname: uuidv4(),
+        clientDeviceId: uuidv4(),
+        clientIsAlive: true
+      }).then(res => {
+        console.log('statusCode :' + res.status); //console.log(res.data.client)
+
+        wsws.clientId = res.data.client._id;
+        wsws.clientName = res.data.client.clientName;
+        wsws.clientIp = res.data.client.clientIp;
+        wsws.clientHostname = res.data.client.clientHostname;
+        wsws.clientDeviceId = res.data.client.clientDeviceId;
+      }).catch(error => {
+        console.error(error);
+      });
+      wsws.on('pong', function heartbeat() {
+        this.isAlive = true;
+        axios.post(apiServer + 'alive', {
+          clientId: wsws.clientId
+        }).then(res => {
+          console.log('statusCode :' + res.status); //console.log(res.data)
+        }).catch(error => {
+          console.error(error);
+        });
+        console.log('Client online...');
+      });
       wsws.on('close', function close() {
         console.log('Client disconnected!');
+        axios.post(apiServer + 'update', {
+          clientId: wsws.clientId,
+          clientName: wsws.clientName,
+          clientIp: wsws.clientIp,
+          clientHostname: wsws.clientHostname,
+          clientDeviceId: wsws.clientDeviceId,
+          clientIsAlive: false
+        }).then(res => {
+          console.log('statusCode :' + res.status); //console.log(res.data)
+        }).catch(error => {
+          console.error(error);
+        });
         clearInterval(interval);
       });
+      String;
       wsws.on('message', function incoming(message) {
         console.log('Received Message:', message);
         wsws.send(Date() + ' | Message received at ' + os.hostname + ': ' + message);
@@ -36,11 +87,6 @@ server.on('upgrade', function upgrade(request, socket, head) {
   } else {
     socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
     socket.destroy();
-  }
-
-  function heartbeat() {
-    this.isAlive = true;
-    console.log('Client online...');
   }
 
   function noop() {}
