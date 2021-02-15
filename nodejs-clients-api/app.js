@@ -2,7 +2,7 @@ const express = require('express')
 var bodyParser = require('body-parser');
 const clientsRouter = require('./routes/clients.js')
 const app = express()
-const port = 3000
+const port = process.env.API_PORT || 3000;
 
 //Set up mongoose connection
 var mongoose = require('mongoose');

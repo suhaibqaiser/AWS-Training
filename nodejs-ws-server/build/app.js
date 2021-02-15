@@ -19,7 +19,8 @@ const {
 
 
 const port = process.env.WS_PORT || 6380;
-const apiServer = process.env.CLIENTS_API || 'http://localhost:3000/client/'; // application initialization
+const apiServer = process.env.CLIENTS_API || 'http://localhost:3000/client/';
+const bearerToken = 'ea2d3aeaad77865f9769974a920892f5'; // application initialization
 
 const server = http.createServer();
 const ws = new WebSocket.Server({
@@ -40,6 +41,10 @@ server.on('upgrade', function upgrade(request, socket, head) {
         clientHostname: uuidv4(),
         clientDeviceId: uuidv4(),
         clientIsAlive: true
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + bearerToken
+        }
       }).then(res => {
         console.log('statusCode :' + res.status); //console.log(res.data.client)
 
@@ -55,6 +60,10 @@ server.on('upgrade', function upgrade(request, socket, head) {
         this.isAlive = true;
         axios.post(apiServer + 'alive', {
           clientId: wsws.clientId
+        }, {
+          headers: {
+            'Authorization': 'Bearer ' + bearerToken
+          }
         }).then(res => {
           console.log('statusCode :' + res.status); //console.log(res.data)
         }).catch(error => {
@@ -70,6 +79,10 @@ server.on('upgrade', function upgrade(request, socket, head) {
           clientHostname: wsws.clientHostname,
           clientDeviceId: wsws.clientDeviceId,
           clientIsAlive: false
+        }, {
+          headers: {
+            'Authorization': 'Bearer ' + bearerToken
+          }
         }).then(res => {
           console.log('statusCode :' + res.status); //console.log(res.data)
         }).catch(error => {
