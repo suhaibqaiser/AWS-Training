@@ -8,8 +8,8 @@ const { v4: uuidv4 } = require('uuid');
 const { randomInt } = require("crypto");
 
 // application constants
-const port = 6380;
-const apiServer = 'http://localhost:3000/client/'
+const port = process.env.WS_PORT || 6380;
+const apiServer = process.env.CLIENTS_API || 'http://localhost:3000/client/'
 
 // application initialization
 const server = http.createServer();
@@ -25,7 +25,7 @@ server.on('upgrade', function upgrade(request, socket, head) {
             ws.emit('connection', wsws, request);
 
             wsws.isAlive = true;
-            console.log('Client connected ');
+            //console.log('Client connected ');
             axios
                 .put(apiServer + 'register', {
                     clientName: randomInt(99999),
@@ -55,11 +55,11 @@ server.on('upgrade', function upgrade(request, socket, head) {
                     }).catch(error => {
                         console.error(error)
                     })
-                console.log('Client online...');
+                //console.log('Client online...');
             });
 
             wsws.on('close', function close() {
-                console.log('Client disconnected!');
+                //console.log('Client disconnected!');
                 axios
                     .post(apiServer + 'update', {
                         clientId: wsws.clientId,
@@ -78,7 +78,7 @@ server.on('upgrade', function upgrade(request, socket, head) {
             }); String
 
             wsws.on('message', function incoming(message) {
-                console.log('Received Message:', message);
+                //console.log('Received Message:', message);
                 wsws.send(Date() + ' | Message received at ' + os.hostname + ': ' + message);
             });
         });
